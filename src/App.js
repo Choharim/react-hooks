@@ -1,27 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const array = [
-  {title:"first",
-  content:"I am first"},
-  {title:"second",
-  content:"I am second"}
-];
-
-const useTab = (initIndex, allIndex ) => {
-  const [ index, setIndex ] = useState(initIndex); 
-  if(!Array.isArray(allIndex) || !allIndex){
-    return;
-  }
-    return { change:setIndex, current:allIndex[index] };
-
+const useTitle = (initTitle) => {
+  const [title,setTitle]=useState(initTitle);
+  useEffect(()=> {
+    const htmlTitle = document.querySelector("title");
+    htmlTitle.innerText = `${title}`;
+  },[title]);
+  return {setTitle};
 };
 
 const App = () => {
-const { change,current } = useTab(0,array);
+ const {setTitle}=useTitle("Loading...");
+ setTimeout(()=>{setTitle("Home")},5000);
  return (
  <div>
- {array.map((obj,num) => <button onClick={()=> change(num)} key={num}>{obj.title}</button>)}
- <span>{current.content}</span>
+ 
  </div>
  );
 };

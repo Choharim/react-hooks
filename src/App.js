@@ -1,39 +1,30 @@
 import React, { useState } from 'react';
 
-const useInput = (initText, validator ) => {
-  const [ text,setText ] = useState(initText);
+const array = [
+  {title:"first",
+  content:"I am first"},
+  {title:"second",
+  content:"I am second"}
+];
 
-  const onChange = (event) => {
-    const { target: { value } } = event;
-    const confirm = validator(); 
-    if(typeof validator === "function" && confirm === true){
-    setText(value);
-    }else {
-      return;
-    }
-  };
-  const onSubmit = (event) => {
-    event.preventDefault();
-  };
-  return { text, onChange, onSubmit };
+const useTab = (initIndex, allIndex ) => {
+  const [ index, setIndex ] = useState(initIndex); 
+  if(!Array.isArray(allIndex) || !allIndex){
+    return;
+  }
+    return { change:setIndex, current:allIndex[index] };
+
 };
 
 const App = () => {
-  const vali = () => {
-    if(use.text.length < 5){
-      return true;
-    } else {
-      return false;
-    }
-   };
-  const use = useInput("Mr.s",vali);
- 
+const { change,current } = useTab(0,array);
  return (
-   <form onSubmit={use.onSubmit}>
-     <input onChange={use.onChange} value={use.text} type="text" placeholder="something"></input>
-     <input type="submit"></input>
-   </form>
+ <div>
+ {array.map((obj,num) => <button onClick={()=> change(num)} key={num}>{obj.title}</button>)}
+ <span>{current.content}</span>
+ </div>
  );
 };
 
 export default App;
+ 

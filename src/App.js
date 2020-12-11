@@ -1,31 +1,39 @@
 import React, { useState } from 'react';
 
-class UglyApp extends React.Component {
-  state = {
-    number:0
-  };
+const useInput = (initText, validator ) => {
+  const [ text,setText ] = useState(initText);
 
-  onChangeCount = (event) => {
-    const { target: { name } } = event;
-    if(name === "increment"){
-      this.setState(pre => ({number:pre.number +1}));
-    }else if(name ==="decrement"){
-      this.setState(pre => ({number: pre.number -1}));
+  const onChange = (event) => {
+    const { target: { value } } = event;
+    const confirm = validator(); 
+    if(typeof validator === "function" && confirm === true){
+    setText(value);
+    }else {
+      return;
     }
   };
+  const onSubmit = (event) => {
+    event.preventDefault();
+  };
+  return { text, onChange, onSubmit };
+};
 
-  render(){
-    const { number } = this.state;
-    return (
-      <div className="App">
-        <span>{number}</span>
-        <button onClick={this.onChangeCount} name="increment">increment</button>
-        <button onClick={this.onChangeCount} name="decrement">decrement</button>
-      </div>
-    );
-  }
-}
+const App = () => {
+  const vali = () => {
+    if(use.text.length < 5){
+      return true;
+    } else {
+      return false;
+    }
+   };
+  const use = useInput("Mr.s",vali);
+ 
+ return (
+   <form onSubmit={use.onSubmit}>
+     <input onChange={use.onChange} value={use.text} type="text" placeholder="something"></input>
+     <input type="submit"></input>
+   </form>
+ );
+};
 
-
-
-export default UglyApp;
+export default App;
